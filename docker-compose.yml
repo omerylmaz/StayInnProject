@@ -1,0 +1,68 @@
+version: '3.4'
+
+services:
+  catalogdb:
+    image: postgres
+
+  authdb:
+    image: postgres
+
+  reservationdb:
+    image: postgres
+
+  distributedcache:
+    image: redis
+
+  bookingdb:
+    image: mcr.microsoft.com/mssql/server
+
+  messagebroker:
+    image: rabbitmq:management
+
+  logging:
+    image: datalust/seq
+    container_name: seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:5341"
+      - "8081:80" 
+
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+
+  reservation.api:
+    image: ${DOCKER_REGISTRY-}reservationapi
+    build:
+      context: .
+      dockerfile: Services/Reservation/Reservation.API/Dockerfile
+
+  discount.grpc:
+    image: ${DOCKER_REGISTRY-}discountgrpc
+    build:
+      context: .
+      dockerfile: Services/Discount/Discount.Grpc/Dockerfile
+
+  booking.api:
+    image: ${DOCKER_REGISTRY-}bookingapi
+    build:
+      context: .
+      dockerfile: Services/Booking/Booking.API/Dockerfile
+
+  apigateway:
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: Gateways/ApiGateway
+      dockerfile: Dockerfile
+
+volumes:
+  postgres_catalog:
+  postgres_reservation:
+
+
+
+
+

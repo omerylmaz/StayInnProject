@@ -1,0 +1,27 @@
+{
+  "ReverseProxy": {
+    "Clusters": {
+      "catalog-cluster": {
+        "Destinations": {
+          "destination1": {
+            "Address": "http://catalog.api:8080"
+          }
+        }
+      },
+      "reservation-cluster": {
+        "Destinations": {
+          "destination1": {
+            "Address": "http://reservation.api:8080"
+          }
+        }
+      },
+      "booking-cluster": {
+        "Destinations": {
+          "destination1": {
+            "Address": "http://booking.api:8080"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "ReverseProxy": {
+    "Routes": {
+      "catalog-route": {
+        "ClusterId": "catalog-cluster",
+        "Match": {
+          "Path": "/catalog-service/{**catch-all}"
+        },
+        "Transforms": [ { "PathPattern": "{**catch-all}" } ]
+      },
+      "reservation-route": {
+        "ClusterId": "reservation-cluster",
+        "Match": {
+          "Path": "/reservation-service/{**catch-all}"
+        },
+        "Transforms": [ { "PathPattern": "{**catch-all}" } ]
+      },
+      "booking-route": {
+        "ClusterId": "booking-cluster",
+        "RateLimiterPolicy": "fixed",
+        "Match": {
+          "Path": "/booking-service/{**catch-all}"
+        },
+        "Transforms": [ { "PathPattern": "{**catch-all}" } ]
+      },
+      "auth-route": {
+        "ClusterId": "auth-cluster",
+        "RateLimiterPolicy": "fixed",
+        "Match": {
+          "Path": "/auth-service/{**catch-all}"
+        },
+        "Transforms": [ { "PathPattern": "{**catch-all}" } ]
+      }
+    },
+    "Clusters": {
+      "catalog-cluster": {
+        "Destinations": {
+          "destination1": {
+            "Address": "http://localhost:5050"
+          }
+        }
+      },
+      "reservation-cluster": {
+        "Destinations": {
+          "destination1": {
+            "Address": "http://localhost:6001"
+          }
+        }
+      },
+      "booking-cluster": {
+        "Destinations": {
+          "destination1": {
+            "Address": "http://localhost:6003"
+          }
+        }
+      },
+      "auth-cluster": {
+        "Destinations": {
+          "destination1": {
+            "Address": "https://localhost:5054"
+          }
+        }
+      }
+    }
+  }
+}
